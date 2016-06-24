@@ -1,0 +1,29 @@
+<?php
+
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Field\FieldConfigInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function lightning_media_image_field_config_insert(FieldConfigInterface $field) {
+  // If this is an image field, have it display the image browser by default.
+  if ($field->getType() == 'image') {
+    $id = $field->getTargetEntityTypeId() . '.' . $field->getTargetBundle() . '.default';
+    $display = EntityFormDisplay::load($id);
+
+    $component = $display->getComponent($field->getName());
+    if ($component) {
+      $display->setComponent($field->getName(), [
+        'type' => 'file_entity_browser',
+        'settings' => [
+          'entity_browser' => 'image_browser',
+          'field_widget_edit' => TRUE,
+          'field_widget_remove' => TRUE,
+          'view_mode' => 'thumbnail',
+          'open' => FALSE,
+        ],
+      ])->save();
+    }
+  }
+}

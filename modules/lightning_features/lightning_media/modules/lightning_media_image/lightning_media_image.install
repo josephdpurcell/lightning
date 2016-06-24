@@ -1,8 +1,18 @@
 <?php
 
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\entity_browser\Entity\EntityBrowser;
+use Drupal\image\Entity\ImageStyle;
 use Drupal\views\Entity\View;
+
+/**
+ * Implements hook_install().
+ */
+function lightning_media_image_install() {
+  // Set the default image style when displaying image files in thumbnail mode.
+  lightning_media_image_update_8003();
+}
 
 /**
  * Creates the media_browser form display.
@@ -25,4 +35,17 @@ function lightning_media_image_update_8002() {
 
   $values = lightning_read_config('entity_browser.browser.image_browser', 'lightning_media_image');
   EntityBrowser::create($values)->save();
+}
+
+/**
+ * Sets the default image style for image file thumbnail display.
+ */
+function lightning_media_image_update_8003() {
+  $image_style = ImageStyle::load('medium');
+  if ($image_style) {
+    $display = EntityViewDisplay::load('file.image.thumbnail');
+    $component = $display->getComponent('uri');
+    $component['settings']['image_style'] = $image_style->id();
+    $display->setComponent('uri', $component)->save();
+  }
 }
