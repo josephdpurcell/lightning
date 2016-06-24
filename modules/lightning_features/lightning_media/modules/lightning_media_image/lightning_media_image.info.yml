@@ -3,8 +3,10 @@ description: 'Image support for Lightning Media.'
 type: module
 core: 8.x
 dependencies:
+  - entity_browser
+  - file_entity
   - image
   - lightning_media
   - media_entity_image
-version: 8.x-1.0-rc6
+version: 8.x-1.01
 package: Lightning

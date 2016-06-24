@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - views
+name: image_browser
+label: 'Image Browser'
+display: modal
+display_configuration:
+  width: 650
+  height: 500
+  link_text: 'Select Image(s)'
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  651277e1-3fa2-4f34-911a-fb8a238a6fc2:
+    settings:
+      view: image_browser
+      view_display: entity_browser
+    uuid: 651277e1-3fa2-4f34-911a-fb8a238a6fc2
+    weight: 1
+    label: Library
+    id: view
+  18305601-1e5f-4d47-a42e-8fcdfb1227a7:
+    settings:
+      upload_location: 'public://'
+    uuid: 18305601-1e5f-4d47-a42e-8fcdfb1227a7
+    weight: 2
+    label: Upload
+    id: upload
+submit_text: Select
