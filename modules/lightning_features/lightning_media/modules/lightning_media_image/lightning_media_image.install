@@ -1,6 +1,8 @@
 <?php
 
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\entity_browser\Entity\EntityBrowser;
+use Drupal\views\Entity\View;
 
 /**
  * Creates the media_browser form display.
@@ -8,4 +10,19 @@ use Drupal\Core\Entity\Entity\EntityFormDisplay;
 function lightning_media_image_update_8001() {
   $display = lightning_read_config('core.entity_form_display.media.image.media_browser', 'lightning_media_image');
   EntityFormDisplay::create($display)->save();
+}
+
+/**
+ * Installs file_entity and creates the image browser and its view.
+ */
+function lightning_media_image_update_8002() {
+  if (! \Drupal::moduleHandler()->moduleExists('file_entity')) {
+    \Drupal::service('module_installer')->install(['file_entity']);
+  }
+
+  $values = lightning_read_config('views.view.image_browser', 'lightning_media_image');
+  View::create($values)->save();
+
+  $values = lightning_read_config('entity_browser.browser.image_browser', 'lightning_media_image');
+  EntityBrowser::create($values)->save();
 }

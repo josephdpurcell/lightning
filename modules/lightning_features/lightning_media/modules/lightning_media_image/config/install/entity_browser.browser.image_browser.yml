@@ -3,6 +3,8 @@ status: true
 dependencies:
   module:
     - views
+  config:
+    - views.view.image_browser
 name: image_browser
 label: 'Image Browser'
 display: modal
