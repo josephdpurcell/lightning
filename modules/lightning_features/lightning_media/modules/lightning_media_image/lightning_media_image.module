@@ -4,9 +4,9 @@ use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
 use Drupal\field\Entity\FieldConfig;
 
 /**
- * Implements hook_ENTITY_TYPE_presave().
+ * Implements hook_ENTITY_TYPE_update().
  */
-function lightning_media_image_entity_form_display_presave(EntityFormDisplayInterface $display) {
+function lightning_media_image_entity_form_display_update(EntityFormDisplayInterface $display) {
   /** @var EntityFormDisplayInterface $original */
   $original = \Drupal::entityTypeManager()
     ->getStorage($display->getEntityTypeId())
