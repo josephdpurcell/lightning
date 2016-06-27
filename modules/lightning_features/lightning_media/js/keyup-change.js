@@ -1,7 +1,6 @@
 /**
  * @file
- * Contains a behavior that automatically fires the change event on text
- * inputs after 600 milliseconds have elapsed.
+ * A behavior that fires the change event on text inputs after a delay.
  */
 
 (function ($, _, Drupal) {
