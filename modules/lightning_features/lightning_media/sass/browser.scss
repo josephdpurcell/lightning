@@ -37,21 +37,14 @@ nav.eb-tabs {
   }
 
   .views-col {
-    height: 100%;
-    &.selected {
-      img {
-        box-shadow: 0 0 20px lime;
-      }
-    }
-    .views-field {
-      max-height: 240px;
-      padding: 2px;
+    &.selected img {
+      box-shadow: 0 0 20px lime;
     }
 
     img {
-      height: 100%;
       object-fit: cover;
-      width: 100%
+      max-width: 100%;
+      height: auto;
     }
   }
 }

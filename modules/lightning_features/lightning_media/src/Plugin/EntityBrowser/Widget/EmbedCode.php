@@ -29,19 +29,24 @@ class EmbedCode extends EntityFormProxy {
   public function getForm(array &$original_form, FormStateInterface $form_state, array $additional_widget_parameters) {
     $form = parent::getForm($original_form, $form_state, $additional_widget_parameters);
 
-    $form['embed_code'] = array(
+    $form['embed_code'] = [
       '#type' => 'textarea',
       '#placeholder' => $this->t('Enter a URL...'),
-      '#attributes' => array(
-        'class' => array('keyup-change'),
-      ),
-      '#ajax' => array(
+      '#attributes' => [
+        'class' => ['keyup-change'],
+      ],
+      '#attached' => [
+        'library' => [
+          'lightning_media/keyup_change',
+        ],
+      ],
+      '#ajax' => [
         'event' => 'change',
         'wrapper' => $form['ief_target']['#id'],
         'method' => 'html',
         'callback' => [$this, 'getEntityForm'],
-      ),
-    );
+      ],
+    ];
 
     return $form;
   }

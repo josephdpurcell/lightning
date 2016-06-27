@@ -7,4 +7,10 @@ browser.styling:
     js/browser.js: { }
   dependencies:
     - core/jquery
+
+keyup_change:
+  js:
+    js/keyup-change.js: { }
+  dependencies:
+    - core/jquery
     - core/underscore
