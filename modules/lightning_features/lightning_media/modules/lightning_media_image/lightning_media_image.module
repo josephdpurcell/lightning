@@ -1,19 +1,25 @@
 <?php
 
-use Drupal\Core\Entity\Entity\EntityFormDisplay;
-use Drupal\Core\Field\FieldConfigInterface;
+use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
+use Drupal\field\Entity\FieldConfig;
 
 /**
- * Implements hook_ENTITY_TYPE_insert().
+ * Implements hook_ENTITY_TYPE_presave().
  */
-function lightning_media_image_field_config_insert(FieldConfigInterface $field) {
-  // If this is an image field, have it display the image browser by default.
-  if ($field->getType() == 'image') {
-    $id = $field->getTargetEntityTypeId() . '.' . $field->getTargetBundle() . '.default';
-    $display = EntityFormDisplay::load($id);
+function lightning_media_image_entity_form_display_presave(EntityFormDisplayInterface $display) {
+  /** @var EntityFormDisplayInterface $original */
+  $original = \Drupal::entityTypeManager()
+    ->getStorage($display->getEntityTypeId())
+    ->loadUnchanged($display->id());
 
-    $component = $display->getComponent($field->getName());
-    if ($component) {
+  // Determine which fields are being added to the display.
+  $added = array_diff_key($display->getComponents(), $original->getComponents());
+
+  foreach (array_keys($added) as $field) {
+    $id = $display->getTargetEntityTypeId() . '.' . $display->getTargetBundle() . '.' . $field;
+    $field = FieldConfig::load($id);
+
+    if ($field->getType() == 'image') {
       $display->setComponent($field->getName(), [
         'type' => 'file_entity_browser',
         'settings' => [
@@ -23,7 +29,7 @@ function lightning_media_image_field_config_insert(FieldConfigInterface $field) 
           'view_mode' => 'thumbnail',
           'open' => FALSE,
         ],
-      ])->save();
+      ]);
     }
   }
 }
