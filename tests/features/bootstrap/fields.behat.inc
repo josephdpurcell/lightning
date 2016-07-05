@@ -2,7 +2,6 @@
 
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\field\Entity\FieldConfig;
 
 /**
  * Subcontext containing steps for dealing with fields.
@@ -52,13 +51,34 @@ class FieldsSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     // Don't set any widget settings, either.
     $this->minkContext->pressButton('Save settings');
+  }
 
-    // Queue the created field for deletion at the end of the scenario.
-    $id = 'node.' . $node_type . '.field_' . preg_replace('/[^a-z0-9_]+/', '_', strtolower($label));
-    $field = FieldConfig::load($id);
-    /** @var \EntitySubContext $context */
-    $context = $this->getContext('\EntitySubContext');
-    $context->queueEntity($field);
+  /**
+   * Deletes a field from a content type.
+   *
+   * @param string $label
+   *   The label of the field to delete.
+   * @param string $node_type
+   *   The content type from which to delete the field.
+   *
+   * @When I delete the :label field from the :node_type content type
+   */
+  public function deleteField($label, $node_type) {
+    $this->minkContext->visit("/admin/structure/types/manage/{$node_type}/fields");
+
+    $fields = $this->getSession()->getPage()->findAll('css', '#field-overview tbody tr');
+    /** @var \Behat\Mink\Element\ElementInterface $field */
+    foreach ($fields as $field) {
+      if ($field->find('css', 'td')->getText() == $label) {
+        // Find the drop button, open it, and click its Delete link.
+        $drop_button = $field->find('css', 'ul.dropbutton');
+        $drop_button->find('css', 'li.dropbutton-toggle')->click();
+        $drop_button->find('css', 'li.delete a')->click();
+
+        $this->minkContext->pressButton('Delete');
+        break;
+      }
+    }
   }
 
 }

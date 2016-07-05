@@ -42,3 +42,4 @@ Feature: Image media assets
     Then the formatter should be "Entity browser (file)"
     And the "Entity browser" field should contain "image_browser"
     And the "File view mode" field should contain "thumbnail"
+    And I delete the "Foo Image" field from the page content type
