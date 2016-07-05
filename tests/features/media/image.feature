@@ -36,6 +36,7 @@ Feature: Image media assets
     Given I am logged in as a user with the administrator role
     When I visit "/admin/structure/types/manage/page/fields"
     And I create a image field called "Foo Image" on the page content type
+    And I visit "/admin/structure/types/manage/page/form-display"
     And I click "Manage form display"
     And I press "field_foo_image_settings_edit"
     And I wait for AJAX to finish
