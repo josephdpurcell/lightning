@@ -4,9 +4,13 @@ use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
 use Drupal\field\Entity\FieldConfig;
 
 /**
- * Implements hook_ENTITY_TYPE_update().
+ * Implements hook_ENTITY_TYPE_presave().
  */
-function lightning_media_image_entity_form_display_update(EntityFormDisplayInterface $display) {
+function lightning_media_image_entity_form_display_presave(EntityFormDisplayInterface $display) {
+  if ($display->isNew()) {
+    return;
+  }
+
   /** @var EntityFormDisplayInterface $original */
   $original = \Drupal::entityTypeManager()
     ->getStorage($display->getEntityTypeId())
@@ -17,6 +21,7 @@ function lightning_media_image_entity_form_display_update(EntityFormDisplayInter
 
   foreach (array_keys($added) as $field) {
     $id = $display->getTargetEntityTypeId() . '.' . $display->getTargetBundle() . '.' . $field;
+    /** @var \Drupal\Core\Field\FieldConfigInterface $field */
     $field = FieldConfig::load($id);
 
     if ($field->getType() == 'image') {

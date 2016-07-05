@@ -370,4 +370,40 @@ class LightningSubContext extends DrupalSubContextBase implements DrupalSubConte
     }
   }
 
+  /**
+   * Asserts that a field is using a specific formatter.
+   *
+   * This step assumes that the field's form display settings have been opened.
+   *
+   * @param string $label
+   *   The expected formatter label.
+   *
+   * @throws ExpectationException
+   *   If the expected formatter label doesn't match the actual one.
+   *
+   * @Then the formatter should be :label
+   */
+  public function assertFormatter($label) {
+    $element = $this->assertSession()->elementExists('css', 'span.plugin-name');
+
+    $actual_text = $element->getText();
+    if ($actual_text != $label) {
+      throw new ExpectationException("Expected formatter to be '{$label}' but it was '{$actual_text}'.", $this->getSession()->getDriver());
+    }
+  }
+
+  /**
+   * Asserts that a specific option is selected in a list.
+   *
+   * @param string $field
+   *   The select list's locator (label, ID, etc.)
+   * @param string $value
+   *   The expected value.
+   *
+   * @Then :value should be selected for :field
+   */
+  public function assertSelection($field, $value) {
+    $this->assertSession()->fieldValueEquals($field, $value);
+  }
+
 }
