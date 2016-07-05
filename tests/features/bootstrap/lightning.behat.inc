@@ -396,7 +396,7 @@ class LightningSubContext extends DrupalSubContextBase implements DrupalSubConte
    * Asserts that a specific option is selected in a list.
    *
    * @param string $field
-   *   The select list's locator (label, ID, etc.)
+   *   The select list's locator (label, ID, etc.).
    * @param string $value
    *   The expected value.
    *
