@@ -94,4 +94,16 @@ class MediaLibrarySubContext extends DrupalSubContextBase implements DrupalSubCo
     $this->awaitEntityForm();
   }
 
+  /**
+   * @param $label
+   *
+   * @When I open the image browser for :label
+   */
+  public function openImageBrowser($label) {
+    /** @var \CollapsibleSubContext $context */
+    $context = $this->getContext('\CollapsibleSubContext');
+
+    $context->openCollapsible($context);
+  }
+
 }

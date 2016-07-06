@@ -1,8 +1,7 @@
-@media @api
+@media @api @javascript
 Feature: Image media assets
   A media asset representing a locally hosted image.
 
-  @javascript
   Scenario: Creating an image
     Given I am logged in as a user with the media_creator role
     When I visit "/media/add/image"
@@ -16,7 +15,6 @@ Feature: Image media assets
     Then I should be visiting a media entity
     And I should see "Foobaz"
 
-  @javascript
   Scenario: Uploading an image to be ignored by the media library
     Given I am logged in as a user with the media_creator role
     When I visit "/media/add/image"
@@ -31,7 +29,6 @@ Feature: Image media assets
     And I visit "/entity-browser/iframe/media_browser"
     Then I should see "There are no media items to display."
 
-  @javascript
   Scenario: New image fields should use the image browser by default
     Given I am logged in as a user with the administrator role
     When I visit "/admin/structure/types/manage/page/fields"
@@ -44,3 +41,19 @@ Feature: Image media assets
     And the "Entity browser" field should contain "image_browser"
     And the "File view mode" field should contain "thumbnail"
     And I delete the "Foo Image" field from the page content type
+
+  @testthis
+  Scenario: Uploading an image into an image field using the image browser
+    Given I am logged in as a user with the administrator role
+    When I create a image field called "My Image" on the page content type
+    And I visit "/node/add/page"
+    And I open the "My Image" collapsible
+    And I press "Select Image(s)"
+    And I wait for AJAX to finish
+    And I click "Upload"
+    And I attach the file "chihuly.jpg" to "edit-upload-upload"
+    And I press "Select"
+    And I wait for AJAX to finish
+    Then an entity should be selected for "My Image"
+    And I queue the latest media entity for deletion
+    And I delete the "My Image" field from the page content type
